@@ -46,10 +46,10 @@ class Pins(object):
     def output(self, name, value):
 	GPIO.output(self.getp(name), value)
 	
+    def turn_on(self, name):
+	GPIO.output(self.getp(name), 1)
+	
+    def turn_off(self, name):
+	GPIO.output(self.getp(name), 0)
+	
 
-    """
-    pins = Pins()
-    pins.add(23, 'doorbell_input', IN)
-    pins.add(22, 'test_led', OUT)
-    pins.setup()
-    """
