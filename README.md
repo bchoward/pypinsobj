@@ -14,7 +14,9 @@ from pypinsobj import pins
 
 p = pins.Pins()        #defaults to BCM mode, or use p = Pins(mode=GPIO.BOARD)
 p.add(23, 'temp_sensor', IN)
+p.add(24, 'doorbell', IN)
 p.add(22, 'test_LED', OUT)
+p.add(25, 'latch', OUT)
 p.setup()
 
 ...
@@ -23,7 +25,13 @@ if p.input('temp_sensor'):
        p.turn_on('test_LED')
 
 
-GPIO.add_event_detect(p.getp('doorbell_input'), GPIO.RISING, callback=doorbell_cb, bouncetime=200)
+def doorbell_cb(pin):
+    if pin == p.getp('doorbell'):
+        p.turn_on('latch')
+        sleep(2)
+        p.turn_off('latch)
+
+GPIO.add_event_detect(p.getp('doorbell'), GPIO.RISING, callback=doorbell_cb, bouncetime=200)
 
 GPIO.cleanup()
 ```
