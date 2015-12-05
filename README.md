@@ -1,6 +1,8 @@
 # pypinsobj
 
-Hardwiring pin numbers into raspberry pi code makes it difficult to combine projects, and makes adapting or changing difficult and prone to bugs.  This interface isolates the pin definitions, allowing you to refer to the pins by name.
+Hardwiring pin numbers into raspberry pi code makes it difficult to combine projects, 
+and makes adapting or changing difficult and prone to bugs.  This interface isolates 
+the pin definitions, allowing you to refer to the pins by name.
 
 
 *Usage:*
