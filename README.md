@@ -6,7 +6,7 @@ the pin definitions, allowing you to refer to the pins by name.
 
 
 *Usage:*
-
+```
 import RPi.GPIO as GPIO
 from RPi.GPIO import IN, OUT
 
@@ -26,4 +26,4 @@ if p.input('temp_sensor'):
 GPIO.add_event_detect(p.getp('doorbell_input'), GPIO.RISING, callback=doorbell_cb, bouncetime=200)
 
 GPIO.cleanup()
-
+```
