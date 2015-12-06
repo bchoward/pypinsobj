@@ -29,7 +29,7 @@ def doorbell_cb(pin):
     if pin == p.getp('doorbell'):
         p.turn_on('latch')
         sleep(2)
-        p.turn_off('latch)
+        p.turn_off('latch')
 
 GPIO.add_event_detect(p.getp('doorbell'), GPIO.RISING, callback=doorbell_cb, bouncetime=200)
 
