@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import RPi.GPIO as GPIO
+import os, sys
+from ast import literal_eval
 
 RESERVED = -1
 IN = RPi.GPIO.IN
@@ -14,10 +16,31 @@ class Pins(object):
     class PinNameError(Exception):
         pass
 
-    def __init__(self, mode=GPIO.BCM):
+    def __init__(self, mode=GPIO.BCM, fromfile=None):
         self.pins = []
-        GPIO.setmode(mode)
-        #GPIO.setmode(GPIO.BOARD)
+        if fromfile:
+            if not os.path.isfile(filename):
+                sys.exit("File not found: {}").format(filename)
+            with open(filename, mode='r') as f:
+
+                """ format is
+                {'mode':GPIO.BM,
+                 'pins': [
+                            {'name':'test_led',
+                             'pin' : 23,
+                             'state': IN
+                            },
+                         ]
+                """
+                x = f.read()
+                raw = literal_eval(x)
+                mode = raw['mode']
+                self.pins = raw['pins']
+                GPIO.setmode(mode)
+                self.setup()
+        else:
+            GPIO.setmode(mode)
+            #GPIO.setmode(GPIO.BOARD)
 
     def delist(self,x):
         if x and len(x) == 1:
