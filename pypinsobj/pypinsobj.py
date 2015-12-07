@@ -2,6 +2,7 @@
 
 import RPi.GPIO as GPIO
 
+RESERVED = -1
 IN = RPi.GPIO.IN
 OUT = RPi.GPIO.OUT
 RISING = RPi.GPIO.RISING
@@ -29,7 +30,8 @@ class Pins(object):
             raise PinNameError('name {} already taken'.format(name))
         else:
             self.pins.append({'pin':pin, 'name':name, 'state':state})
-            GPIO.setup(pin, state)
+            if state in [IN, OUT]:
+                GPIO.setup(pin, state)
 
     def get(self,name):
         return self.delist( [ p for p in self.pins if p['name'] == name ] )
@@ -40,7 +42,8 @@ class Pins(object):
 
     def setup(self):
         for p in pins:
-            GPIO.setup(p['pin'], p['state'])
+            if p['state'] in [IN, OUT]:
+                GPIO.setup(p['pin'], p['state'])
 
     def input(self, name):
         return GPIO.input(self.getp(name))
@@ -55,7 +58,12 @@ class Pins(object):
         GPIO.output(self.getp(name), 0)
 
     def wait_event(self, name, direction, callback, bouncetime=None):
-        GPIO.add_event_detect(p.getp(name), direction, callback=callback, bouncetime=bouncetime)
+        if direction in [RISING, FALLING, BOTH]:
+            GPIO.add_event_detect(p.getp(name),
+                                  direction,
+                                  callback=callback,
+                                  bouncetime=bouncetime
+                                  )
 
 
 
