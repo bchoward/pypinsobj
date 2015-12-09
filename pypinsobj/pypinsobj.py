@@ -10,6 +10,8 @@ OUT = RPi.GPIO.OUT
 RISING = RPi.GPIO.RISING
 FALLING = RPi.GPIO.FALLING
 BOTH = RPi.GPIO.BOTH
+BCM = RPi.GPIO.BCM
+BOARD = RPi.GPIO.BOARD
 
 class Pins(object):
 
@@ -37,7 +39,7 @@ class Pins(object):
                 mode = raw['mode']
                 self.pins = raw['pins']
                 GPIO.setmode(mode)
-                self.setup()
+                self.__setup()
         else:
             GPIO.setmode(mode)
             #GPIO.setmode(GPIO.BOARD)
@@ -48,25 +50,32 @@ class Pins(object):
         else:
             return x
 
-    def add(self,pin, name, state):
+    def add(self,pin, name, state, comment=None):
         if name in [p['name'] for p in self.pins]:
             raise PinNameError('name {} already taken'.format(name))
+        if pin in [p['pin'] for p in self.pins]:
+            raise PinNameError('pin number {} already assigned to ' \
+                               .format(name,
+                                       next(p['name'] for p in pins \
+                                              if p[pin] == pin))))
         else:
-            self.pins.append({'pin':pin, 'name':name, 'state':state})
+            self.pins.append({'pin':pin, 'name':name, 'state':state, 'comment':comment})
             if state in [IN, OUT]:
                 GPIO.setup(pin, state)
 
     def get(self,name):
         return self.delist( [ p for p in self.pins if p['name'] == name ] )
 
-    # not safe if 2+ pins have same name
     def getp(self, name):
         return self.get(name)['pin']
 
-    def setup(self):
+    def __setup(self):
         for p in pins:
             if p['state'] in [IN, OUT]:
                 GPIO.setup(p['pin'], p['state'])
+
+    def get_comment(self, name):
+        return self.get(name)['comment']
 
     def input(self, name):
         return GPIO.input(self.getp(name))
