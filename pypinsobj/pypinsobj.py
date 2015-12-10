@@ -5,13 +5,13 @@ import os, sys
 from ast import literal_eval
 
 RESERVED = -1
-IN = RPi.GPIO.IN
-OUT = RPi.GPIO.OUT
-RISING = RPi.GPIO.RISING
-FALLING = RPi.GPIO.FALLING
-BOTH = RPi.GPIO.BOTH
-BCM = RPi.GPIO.BCM
-BOARD = RPi.GPIO.BOARD
+IN = GPIO.IN
+OUT = GPIO.OUT
+RISING = GPIO.RISING
+FALLING = GPIO.FALLING
+BOTH = GPIO.BOTH
+BCM = GPIO.BCM
+BOARD = GPIO.BOARD
 
 class Pins(object):
 
@@ -57,7 +57,7 @@ class Pins(object):
             raise PinNameError('pin number {} already assigned to ' \
                                .format(name,
                                        next(p['name'] for p in pins \
-                                              if p[pin] == pin))))
+                                              if p[pin] == pin)))
         else:
             self.pins.append({'pin':pin, 'name':name, 'state':state, 'comment':comment})
             if state in [IN, OUT]:
